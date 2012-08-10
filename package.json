@@ -1,0 +1,37 @@
+{
+  "name": "a2sandbox",
+  "description": "Sandbox playground for Apostrophe2",
+  "version": "0.1.0",
+  "homepage": "https://github.com/punkave/a2sandbox",
+  "author": {
+    "name": "P'unk Ave",
+    "email": "team@punkave.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:punkave/a2sandbox.git"
+  },
+  "bugs": {
+    "url": "https://github.com/punkave/a2sandbox/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/punkave/a2sandbox/blob/master/LICENSE-MIT"
+    }
+  ],
+  "main": "lib/a2sandbox",
+  "engines": {
+    "node": ">= 0.6.0"
+  },
+  "scripts": {
+    "test": "grunt test"
+  },
+  "dependencies": {
+    "express"           : "3.0.0rc2"
+  },
+  "devDependencies": {
+    "grunt": "~0.3.12"
+  },
+  "keywords": []
+}
