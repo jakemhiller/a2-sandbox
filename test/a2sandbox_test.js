@@ -1,4 +1,4 @@
-var a2sandbox = require('../lib/a2sandbox.js');
+//var a2sandbox = require('../lib/a2sandbox.js');
 
 /*
   ======== A Handy Little Nodeunit Reference ========
@@ -20,15 +20,15 @@ var a2sandbox = require('../lib/a2sandbox.js');
     test.ifError(value)
 */
 
-exports['awesome'] = {
-  setUp: function(done) {
-    // setup here
-    done();
-  },
-  'no args': function(test) {
-    test.expect(1);
-    // tests here
-    test.equal(a2sandbox.awesome(), 'awesome', 'should be awesome.');
-    test.done();
-  }
-};
+// exports['awesome'] = {
+//   setUp: function(done) {
+//     // setup here
+//     done();
+//   },
+//   'no args': function(test) {
+//     test.expect(1);
+//     // tests here
+//     test.equal(a2sandbox.awesome(), 'awesome', 'should be awesome.');
+//     test.done();
+//   }
+// };
