@@ -20,9 +20,9 @@ window.a2 = {};
     // options.data is equivalent to previous contentArea.serialize() output
     var data = options.data;
     var id = data.id;
-    self.editId = a2.generateId();
     self.$el = $(options.el);
     self.$el.html('');
+    self.$el.attr('data-content-area-id', id);
     var contentWrappers = [];
     var contentInfos = data.contentInfos;
     var types = options.types;
@@ -30,6 +30,7 @@ window.a2 = {};
     self.add = function(contentInfo)
     {
       var contentWrapper = new a2.contentWrapper({ container: self }, contentInfo);
+      // Content type not available in this project
       if (contentWrapper === false)
       {
         return;
@@ -48,21 +49,35 @@ window.a2 = {};
 
     self.$el.sortable({
       handle: '[data-content-wrapper-sort-handle="1"]',
+      connectWith: '[data-content-area-id]',
+      // Move within an area
       update: function(event, ui) {
-        var contentWrappersById = {};
-        _.each(contentWrappers, function(contentWrapper) {
-          contentWrappersById[contentWrapper.id] = contentWrapper;
-        });
-
-        var newContentWrappers = [];
-        self.$el.children().filter('[data-content-wrapper-id]').each(function(index, contentWrapperEl) {
-          var id = $(contentWrapperEl).attr('data-content-wrapper-id');
-          newContentWrappers.push(contentWrappersById[$(contentWrapperEl).attr('data-content-wrapper-id')]);
-        });
-
-        contentWrappers = newContentWrappers;
+        reflectOrder();
+      },
+      // Received from another area
+      receive: function(event, ui) {
+        reflectOrder();
+      },
+      // Sent to another area
+      remove: function(event, ui) {
+        reflectOrder();
       }
+
     });
+
+    // Helper for sortable. Allows the contentWrappers array to reflect
+    // the actual order of the elements again after a jquery UI drag and drop operation.
+    // Also reflects removal of an item via dragging and addition of a new item
+    // via dragging
+    function reflectOrder()
+    {
+      contentWrappers.length = 0;
+      self.$el.children().filter('[data-content-wrapper-id]').each(function(index, contentWrapperEl) {
+        var contentWrapper = $(contentWrapperEl).data('contentWrapper');
+        contentWrapper.setContainer(self);
+        contentWrappers.push(contentWrapper);
+      });
+    }
 
     self.contentWrapperRemoved = function(contentWrapper)
     {
@@ -73,7 +88,6 @@ window.a2 = {};
     {
       var info = {
         id: id,
-        editId: self.editId,
         contentInfos: []
       };
       _.each(contentWrappers, function(contentWrapper) {
@@ -86,6 +100,14 @@ window.a2 = {};
   a2.contentWrapper = function(options, contentInfo)
   {
     var self = this;
+    
+    // It is useful to have a unique identifier for this
+    // particular session of the content wrapper in the page. For instance
+    // a slideshow slot will need a temporary identifier for its
+    // scratch space when uploading files, and will sync to permanent
+    // space when the entire area is saved. This is not a permanent
+    // database identifier
+
     self.id = a2.generateId();
     var typeConstructor = a2.types[contentInfo.type];
     if (!typeConstructor)
@@ -98,6 +120,11 @@ window.a2 = {};
       a2.template('contentWrapper', 
         a2.contentWrapperDefaultTemplate, { }));
     self.$el.attr('data-content-wrapper-id', self.id);
+
+    // To enable jQuery UI drag and drop straightforwardly the DOM elements need to
+    // carry references to the corresponding contentWrapper objects
+    self.$el.data('contentWrapper', self);
+
     self.$el.find('[data-content="1"]').replaceWith(self.content.$el);
 
     self.$el.find('[data-content-wrapper-delete="1"]').click(function()
@@ -118,6 +145,11 @@ window.a2 = {};
         type: contentInfo.type,
         data: self.content.serialize()
       };
+    }
+
+    self.setContainer = function(container)
+    {
+      options.container = container;
     }
   };
 

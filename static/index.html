@@ -52,7 +52,7 @@
     </div>
   </div>
   <script type="text/javascript">
-    var bodyData = {
+    var defaultData = {
       contentInfos: [
         {
           type: 'text',
@@ -70,43 +70,57 @@
     };
     $(function() {
 
+      contentAreaUi({ id: 'body', data: defaultData });
+      contentAreaUi({ id: 'sidebar', data: defaultData });
+
       // The following controls are not canonical A2, not yet anyway. They are here to demonstrate
-      // that serialization and other functions work as they are intended to
+      // that serialization and other functions work as they are intended to. They make assumptions
+      // about markup.
 
-      var body = null;
-      recreateBody();
-
-      var typeButtons = $('<div class="btn-group"></div>');
-      _.each(a2.typeNames, function(typeName) {
-        var type = a2.types[typeName];
-        var button = $('<a class="btn" href="#">');
-        button.text('+ ' + type.label);
-        button.click(function() {
-          body.add({ type: type.name, data: type.defaultData });
-        });
-        typeButtons.append(button);
-      });
-
-      var actionButtons = $('<div class="btn-group"><a href="#" class="save btn">Save</a> <a href="#" class="revert btn">Revert</a></div>');
-      actionButtons.find('.save').click(function() {
-        var data = body.serialize();
-        bodyData = data;
-        return false;
-      });
-      actionButtons.find('.revert').click(function() {
-        recreateBody();
-        return false;
-      });
-      $('.body').prepend(typeButtons);
-      $('.body').append(actionButtons);
-
-      function recreateBody()
+      function contentAreaUi(options)
       {
-        body = new a2.contentArea({
-          id: 'body',
-          el: '.body .wrapper',
-          data: bodyData
-        });
+        var id = options.id;
+        var data = options.data;
+        data.id = id;
+
+        editView();
+
+        function editView()
+        {
+          var contentArea;
+          recreateContentArea();
+
+          var typeButtons = $('<div class="btn-group"></div>');
+          _.each(a2.typeNames, function(typeName) {
+            var type = a2.types[typeName];
+            var button = $('<a class="btn" href="#">');
+            button.text('+ ' + type.label);
+            button.click(function() {
+              contentArea.add({ type: type.name, data: type.defaultData });
+            });
+            typeButtons.append(button);
+          });
+
+          var actionButtons = $('<div class="btn-group"><a href="#" class="save btn">Save</a> <a href="#" class="revert btn">Revert</a></div>');
+          actionButtons.find('.save').click(function() {
+            data = contentArea.serialize();
+            return false;
+          });
+          actionButtons.find('.revert').click(function() {
+            recreateContentArea();
+            return false;
+          });
+          $('.' + options.id).prepend(typeButtons);
+          $('.' + options.id).append(actionButtons);
+          function recreateContentArea()
+          {
+            contentArea = new a2.contentArea({
+              id: id,
+              el: '.' + id + ' .wrapper',
+              data: data
+            });
+          }
+        }
       }
     });
   </script>
