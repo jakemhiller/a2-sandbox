@@ -42,7 +42,7 @@ window.a2 = {};
         contentInfos: []
       };
       _.each(contentWrappers, function(contentWrapper) {
-        info.contentInfos.push(contentWrapper.content.serialize());
+        info.contentInfos.push(contentWrapper.serialize());
       });
       return info;
     }
@@ -65,6 +65,14 @@ window.a2 = {};
         a2.contentWrapperDefaultTemplate,
         { id: id, editId: options.editId }));
     self.$el.find('[data-content="1"]').replaceWith(self.content.$el);
+
+    self.serialize = function()
+    {
+      return {
+        type: contentInfo.type,
+        data: self.content.serialize()
+      };
+    }
   };
 
   a2.templates = {};
@@ -108,6 +116,14 @@ window.a2 = {};
   {
     return e.find(selector).add(e.filter(selector));
   };
+
+  a2.log = function(m)
+  {
+    if (console.log)
+    {
+      console.log(m);
+    }
+  }
 
   a2.contentWrapperDefaultTemplate = 
     '<li>' +

@@ -52,28 +52,45 @@
     </div>
   </div>
   <script type="text/javascript">
-    $(function() {
-      var body = new a2.contentArea({
-        id: 'body',
-        el: '.body .wrapper',
-        data: {
-          contentInfos: [
-            {
-              type: 'text',
-              data: {
-                'text': 'Once I met a man who had no hat.'
-              }
-            },
-            {
-              type: 'text',
-              data: {
-                text: 'I was sad because I had no fork.'
-              }
-            }
-          ]
+    var bodyData = {
+      contentInfos: [
+        {
+          type: 'text',
+          data: {
+            'text': 'Once I met a man who had no hat.'
+          }
+        },
+        {
+          type: 'text',
+          data: {
+            text: 'I was sad because I had no fork.'
+          }
         }
+      ]
+    };
+    $(function() {
+      var body = null;
+      recreateBody();
+      var buttons = $('<div><a href="#" class="save">Save</a> <a href="#" class="revert">Revert</a></div>');
+      buttons.find('.save').click(function() {
+        var data = body.serialize();
+        bodyData = data;
+        return false;
       });
-      console.log(body.serialize());
+      buttons.find('.revert').click(function() {
+        recreateBody();
+        return false;
+      });
+      $('.body').append(buttons);
+
+      function recreateBody()
+      {
+        body = new a2.contentArea({
+          id: 'body',
+          el: '.body .wrapper',
+          data: bodyData
+        });
+      }
     });
   </script>
 
