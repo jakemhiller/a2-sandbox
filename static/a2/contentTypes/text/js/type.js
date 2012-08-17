@@ -11,5 +11,6 @@ window.a2.registerType({
         'text': a2.findAndSelf(self.$el, '[data-text="1"]').val()
       };
     };
-  }
+  },
+  defaultTemplate: '<textarea data-text="1"><%= text %></textarea>'
 });

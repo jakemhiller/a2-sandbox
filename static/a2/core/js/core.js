@@ -60,41 +60,59 @@ window.a2 = {};
     }
 
     self.content = new a2.types[contentInfo.type].constructor(contentInfo);
-    self.$el = $(a2.template('contentWrapper', { id: id, editId: options.editId }));
+    self.$el = $(
+      a2.template('contentWrapper', 
+        a2.contentWrapperDefaultTemplate,
+        { id: id, editId: options.editId }));
     self.$el.find('[data-content="1"]').replaceWith(self.content.$el);
   };
 
   a2.templates = {};
 
-  a2.template = function(name, data)
+  a2.template = function(name, defaultTemplate, data)
   {
     if (!_.has(a2.templates, name))
     {
       var id = '#a2-template-' + name;
-      a2.templates[name] = _.template($(id).html());
+      var $template = $(id);
+      var templateSource;
+      if (!$template.length)
+      {
+        templateSource = defaultTemplate;
+      }
+      else
+      {
+        templateSource = $template.html();
+      }
+      a2.templates[name] = _.template(templateSource);
     }
     if (data)
     {
-      var result = a2.templates[name](data);
-      return result;
+      return a2.templates[name](data);
     }
   };
 
   a2.contentTypeTemplate = function(name, subname, data)
   {
-    return a2.template('contentType-' + name + '-' + subname, data);
+    return a2.template('contentType-' + name + '-' + subname, a2.types[name].defaultTemplate, data);
   };
 
   a2.generateId = function()
   {
     return String(Math.floor((Math.random() * 2000000000))) + String(Math.floor((Math.random() * 2000000000)));
-  }
+  };
 
   // Like $.find(), but matches elements contained by e *and* e itself if e also matches 
   // the selector
   a2.findAndSelf = function(e, selector)
   {
     return e.find(selector).add(e.filter(selector));
-  }
+  };
+
+  a2.contentWrapperDefaultTemplate = 
+    '<li>' +
+      '<p><a href="#">#</a> <a href="#">x</a></p>' +
+      '<div data-content="1"></div>' +
+    '</li>';
 })();
 

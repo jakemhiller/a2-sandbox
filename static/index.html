@@ -10,7 +10,7 @@
   <script src="/bootstrap/js/bootstrap.min.js"></script>
   <script src="/js/underscore-min.js"></script>
   <script src="/a2/core/js/core.js"></script>
-  <script src="/a2/contentTypes/text/js/type.js"></script>
+ <script src="/a2/contentTypes/text/js/type.js"></script> 
   <link href="/bootstrap/css/bootstrap.css" rel="stylesheet" />
   <link href="/bootstrap/css/bootstrap-responsive.css" rel="stylesheet" />
 
@@ -77,17 +77,5 @@
     });
   </script>
 
-  <!-- We're not there until these migrate to something loaded from the type modules! -->
-  <script id="a2-template-contentType-text-edit" type="text/template">
-    <textarea data-text="1"><%= text %></textarea>
-  </script>
-
-  <!-- There must be an outer element for $() to work as expected. -->
-  <script id="a2-template-contentWrapper" type="text/template">
-    <li>
-      <p><a href="#">#</a> <a href="#">x</a></p>
-      <div data-content="1"></div>
-    </li>
-  </script>
 </body>
 </html>
