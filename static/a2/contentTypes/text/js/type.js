@@ -1,5 +1,6 @@
 window.a2.registerType({
   name: 'text',
+  label: 'Text',
   constructor: function(options)
   {
     var self = this;
@@ -12,5 +13,6 @@ window.a2.registerType({
       };
     };
   },
+  defaultData: { text: '' },
   defaultTemplate: '<textarea data-text="1"><%= text %></textarea>'
 });
