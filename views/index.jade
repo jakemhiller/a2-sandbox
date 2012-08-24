@@ -1,0 +1,117 @@
+!!! 5
+html
+
+  //
+     We bring in jQuery UI 1.8.22, jQuery 1.7.2 (that comes with it), and bootstrap
+     We converted this with http://html2jade.aaron-powell.com/ isn't it awesome?
+  head
+    meta(name='viewport', item='width=device-width, initial-scale=1.0')
+    title Apostrophe 2 Sandbox
+    meta(charset='utf-8')
+    script(src='/jquery-ui/js/jquery-1.7.2.min.js')
+    script(src='/jquery-ui/js/jquery-ui-1.8.22.custom.min.js')
+    script(src='/bootstrap/js/bootstrap.min.js')
+    script(src='/js/underscore-min.js')
+    script(src='/a2/core/js/core.js')
+    script(src='/a2/core/js/area.js')
+    script(src='/a2/core/js/itemWrapper.js')
+    script(src='/a2/itemTypes/text/js/type.js')
+    link(href='/bootstrap/css/bootstrap.css', rel='stylesheet')
+    link(href='/bootstrap/css/bootstrap-responsive.css', rel='stylesheet')
+    //
+       Le HTML5 shim, for IE6-8 support of HTML5 elements
+    //if lt IE 9
+      script(src='http://html5shim.googlecode.com/svn/trunk/html5.js')
+    style(type='text/css')
+      /* Without this (borrowed from one of the bootstrap samples) the bootstrap navbar
+        clobbers the top of the item. */
+      body
+      {
+        padding-top: 60px;
+      }
+  body
+    .navbar.navbar-fixed-top
+      .navbar-inner
+        .container
+          a.brand(href='/') asandbox2
+    .container
+      .row
+        .span7.body
+          ul.wrapper
+            li I am the body.
+        .span1.spacer
+        .span4.sidebar
+          ul.wrapper
+            li I am the sidebar.
+    script(type='text/javascript')
+      var defaultData = {
+        itemInfos: [
+          {
+            type: 'text',
+            data: {
+              'text': 'Once I met a man who had no hat.'
+            }
+          },
+          {
+            type: 'text',
+            data: {
+              text: 'I was sad because I had no fork.'
+            }
+          }
+        ]
+      };
+      $(function() {
+
+        areaUi({ id: 'body', data: defaultData });
+        areaUi({ id: 'sidebar', data: defaultData });
+
+        // The following controls are not canonical A2, not yet anyway. They are here to demonstrate
+        // that serialization and other functions work as they are intended to. They make assumptions
+        // about markup.
+
+        function areaUi(options)
+        {
+          var id = options.id;
+          var data = options.data;
+          data.id = id;
+
+          editView();
+
+          function editView()
+          {
+            var area;
+            recreatearea();
+
+            var typeButtons = $('<div class="btn-group"></div>');
+            _.each(a2.typeNames, function(typeName) {
+              var type = a2.types[typeName];
+              var button = $('<a class="btn" href="#">');
+              button.text('+ ' + type.label);
+              button.click(function() {
+                area.add({ type: type.name, data: type.defaultData });
+              });
+              typeButtons.append(button);
+            });
+
+            var actionButtons = $('<div class="btn-group"><a href="#" class="save btn">Save</a> <a href="#" class="revert btn">Revert</a></div>');
+            actionButtons.find('.save').click(function() {
+              data = area.serialize();
+              return false;
+            });
+            actionButtons.find('.revert').click(function() {
+              recreatearea();
+              return false;
+            });
+            $('.' + options.id).prepend(typeButtons);
+            $('.' + options.id).append(actionButtons);
+            function recreatearea()
+            {
+              area = new a2.area({
+                id: id,
+                el: '.' + id + ' .wrapper',
+                data: data
+              });
+            }
+          }
+        }
+      });

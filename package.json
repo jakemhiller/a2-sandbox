@@ -20,7 +20,7 @@
       "url": "https://github.com/punkave/a2sandbox/blob/master/LICENSE-MIT"
     }
   ],
-  "main": "lib/a2sandbox",
+  "main": "server.js",
   "engines": {
     "node": ">= 0.6.0"
   },
@@ -29,8 +29,10 @@
   },
   "dependencies": {
     "express": "3.0.0rc2",
-    "a2image": "git://github.com/punkave/a2image.git",
-    "a2text": "git://github.com/punkave/a2text.git"
+    "a2-core": "git://github.com/punkave/a2-core.git",
+    "a2-image": "git://github.com/punkave/a2-files.git",
+    "a2-text": "git://github.com/punkave/a2-text.git",
+    "jade": "~0.27.2"
   },
   "devDependencies": {
     "grunt": "~0.3.12"
