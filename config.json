@@ -1,7 +1,7 @@
 {
-  "defaultContentType": "a2text",
-  "contentTypes": [
-    "a2text",
-    "a2image"
+  "defaultItemType": "a2-text",
+  "itemTypes": [
+    "a2-text",
+    "a2-files"
   ]
 }
