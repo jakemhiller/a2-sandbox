@@ -2,7 +2,7 @@
 <html>
 <!-- We bring in jQuery UI 1.8.22, jQuery 1.7.2 (that comes with it), and bootstrap -->
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" item="width=device-width, initial-scale=1.0">
   <title>Apostrophe 2 Sandbox</title>
   <meta charset="utf-8" />
   <script src="/jquery-ui/js/jquery-1.7.2.min.js"></script>
@@ -10,7 +10,9 @@
   <script src="/bootstrap/js/bootstrap.min.js"></script>
   <script src="/js/underscore-min.js"></script>
   <script src="/a2/core/js/core.js"></script>
- <script src="/a2/contentTypes/text/js/type.js"></script> 
+  <script src="/a2/core/js/area.js"></script>
+  <script src="/a2/core/js/itemWrapper.js"></script>
+  <script src="/a2/itemTypes/text/js/type.js"></script>
   <link href="/bootstrap/css/bootstrap.css" rel="stylesheet" />
   <link href="/bootstrap/css/bootstrap-responsive.css" rel="stylesheet" />
 
@@ -20,7 +22,7 @@
   <![endif]-->
   <style type="text/css">
     /* Without this (borrowed from one of the bootstrap samples) the bootstrap navbar
-      clobbers the top of the content. */
+      clobbers the top of the item. */
     body
     {
       padding-top: 60px;
@@ -53,7 +55,7 @@
   </div>
   <script type="text/javascript">
     var defaultData = {
-      contentInfos: [
+      itemInfos: [
         {
           type: 'text',
           data: {
@@ -70,14 +72,14 @@
     };
     $(function() {
 
-      contentAreaUi({ id: 'body', data: defaultData });
-      contentAreaUi({ id: 'sidebar', data: defaultData });
+      areaUi({ id: 'body', data: defaultData });
+      areaUi({ id: 'sidebar', data: defaultData });
 
       // The following controls are not canonical A2, not yet anyway. They are here to demonstrate
       // that serialization and other functions work as they are intended to. They make assumptions
       // about markup.
 
-      function contentAreaUi(options)
+      function areaUi(options)
       {
         var id = options.id;
         var data = options.data;
@@ -87,8 +89,8 @@
 
         function editView()
         {
-          var contentArea;
-          recreateContentArea();
+          var area;
+          recreatearea();
 
           var typeButtons = $('<div class="btn-group"></div>');
           _.each(a2.typeNames, function(typeName) {
@@ -96,25 +98,25 @@
             var button = $('<a class="btn" href="#">');
             button.text('+ ' + type.label);
             button.click(function() {
-              contentArea.add({ type: type.name, data: type.defaultData });
+              area.add({ type: type.name, data: type.defaultData });
             });
             typeButtons.append(button);
           });
 
           var actionButtons = $('<div class="btn-group"><a href="#" class="save btn">Save</a> <a href="#" class="revert btn">Revert</a></div>');
           actionButtons.find('.save').click(function() {
-            data = contentArea.serialize();
+            data = area.serialize();
             return false;
           });
           actionButtons.find('.revert').click(function() {
-            recreateContentArea();
+            recreatearea();
             return false;
           });
           $('.' + options.id).prepend(typeButtons);
           $('.' + options.id).append(actionButtons);
-          function recreateContentArea()
+          function recreatearea()
           {
-            contentArea = new a2.contentArea({
+            area = new a2.area({
               id: id,
               el: '.' + id + ' .wrapper',
               data: data
