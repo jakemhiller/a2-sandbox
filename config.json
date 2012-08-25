@@ -1,7 +1,9 @@
 {
-  "defaultItemType": "a2-text",
-  "itemTypes": [
-    "a2-text",
-    "a2-files"
-  ]
+  "a2": {
+    "defaultItemType": "a2-text",
+    "itemTypeNames": [
+      "a2-text",
+      "a2-files"
+    ]
+  }
 }
