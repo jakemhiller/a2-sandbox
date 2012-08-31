@@ -3,6 +3,7 @@ var fs = require('fs');
 var util = require('util');
 var _ = require('underscore');
 var app = express();
+app.use(express.bodyParser());
 app.set('view engine', 'jade');
 var port = process.env.PORT || 1168;
 var config = JSON.parse(fs.readFileSync('config.json'));
@@ -32,6 +33,45 @@ app.use(express.static('public'));
 
 app.get('/', function(req, res) {
   res.render('index');
+});
+
+var areas = {
+  body: {
+
+  },
+  sidebar: {
+
+  }
+};
+
+app.get('/admin/area/:id', function(req, res) {
+  var id = req.params.id;
+  if (!_.has(areas, id))
+  {
+    res.status = 404;
+    res.send(404);
+    return;
+  }
+  res.send(JSON.stringify(areas[id]));
+});
+
+app.put('/admin/area/:id', function(req, res) {
+  var id = req.params.id;
+  if (!_.has(areas, id)) {
+    res.status = 404;
+    res.send(404);
+  }
+  // Data arrives as JSON, Express turns that into a nice req.body object
+  console.log(req.body);
+  app.a2.validateArea(req.body, {}, function(err, area) {
+    if (err) {
+      console.log('error in post');
+      res.send(500, err);
+      return;
+    }
+    areas[id] = area;
+    res.send(JSON.stringify(areas[id]));
+  });
 });
 
 app.listen(port, function() {
