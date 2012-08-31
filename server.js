@@ -3,10 +3,14 @@ var fs = require('fs');
 var util = require('util');
 var _ = require('underscore');
 var app = express();
-app.set('view engine', 'jade');
 var port = process.env.PORT || 1168;
 var config = JSON.parse(fs.readFileSync('config.json'));
 var a2 = require('a2-core');
+
+// Configure the express app
+app.set('view engine', 'jade');
+app.use(express.static('public'));
+app.use(express.logger('dev'));
 
 // The a2 item types we want are installed
 // for *this project* in its node_modules folder, which the
@@ -22,13 +26,7 @@ config.a2.itemTypes = config.a2.itemTypeNames.map(function(itemTypeName) {
 // intended for a2 (so the rest of our config object can be
 // project-specific if desired)
 
-a2.bootstrap(app, config.a2);
-
-app.use(express.logger('dev'));
-
-// Note that if static can't find something other routes still get a chance to find it.
-
-app.use(express.static('public'));
+app = a2.bootstrap(app, config.a2);
 
 app.get('/', function(req, res) {
   res.render('index');
