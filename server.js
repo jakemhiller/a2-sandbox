@@ -9,6 +9,7 @@ var a2 = require('a2-core');
 
 // Configure the express app
 app.set('view engine', 'jade');
+app.use(express.bodyParser());
 app.use(express.static('public'));
 app.use(express.logger('dev'));
 
@@ -30,6 +31,45 @@ app = a2.bootstrap(app, config.a2);
 
 app.get('/', function(req, res) {
   res.render('index');
+});
+
+var areas = {
+  body: {
+
+  },
+  sidebar: {
+
+  }
+};
+
+app.get('/admin/area/:id', function(req, res) {
+  var id = req.params.id;
+  if (!_.has(areas, id))
+  {
+    res.status = 404;
+    res.send(404);
+    return;
+  }
+  res.send(JSON.stringify(areas[id]));
+});
+
+app.put('/admin/area/:id', function(req, res) {
+  var id = req.params.id;
+  if (!_.has(areas, id)) {
+    res.status = 404;
+    res.send(404);
+  }
+  // Data arrives as JSON, Express turns that into a nice req.body object
+  console.log(req.body);
+  app.a2.validateArea(req.body, {}, function(err, area) {
+    if (err) {
+      console.log('error in post');
+      res.send(500, err);
+      return;
+    }
+    areas[id] = area;
+    res.send(JSON.stringify(areas[id]));
+  });
 });
 
 app.listen(port, function() {

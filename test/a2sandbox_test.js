@@ -2,9 +2,21 @@
   ======== A Handy Little Nodeunit Reference ========
   https://github.com/caolan/nodeunit
 
+  To install nodeunit's command line tool:
+
+  npm install -g nodeunit
+
+  To run tests:
+
+  nodeunit a2sandbox_test.js
+
   Test methods:
     test.expect(numAssertions)
     test.done()
+
+  Note that since you must call test.done(), you can
+  test asynchronous code.
+
   Test assertions:
     test.ok(value, [message])
     test.equal(actual, expected, [message])
@@ -17,9 +29,6 @@
     test.doesNotThrow(block, [error], [message])
     test.ifError(value)
 
-  To run them:
-
-  nodeunit a2sandbox_test.js
 */
 
 var _ = require('underscore');
@@ -30,7 +39,7 @@ exports['suite'] = {
   },
 
   'open': function(test) {
-    test.expect(10);
+    test.expect(11);
     // Mock an express app object as a context
     var app = { locals: {}, use: function() {} };
     var a2 = require('a2-core');
@@ -75,6 +84,7 @@ exports['suite'] = {
         test.ok(!err);
         test.ok(data);
         test.ok(data.itemInfos.length === 2);
+        test.ok(data.itemInfos[0].type);
         _.each(data.itemInfos, function(itemInfo) {
           test.ok(itemInfo.permId.length);
         });
