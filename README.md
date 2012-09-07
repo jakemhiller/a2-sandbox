@@ -2,25 +2,7 @@
 
 Sandbox playground for Apostrophe2
 
-## Getting Started
-Install the module with: `npm install a2sandbox`
-
-```javascript
-var a2sandbox = require('a2sandbox');
-a2sandbox.awesome(); // "awesome"
-```
-
-## Documentation
-_(Coming soon)_
-
-## Examples
-_(Coming soon)_
-
-## Contributing
-In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [grunt](https://github.com/cowboy/grunt).
-
-## Release History
-_(Nothing yet)_
+Currently A2 is being developed in the /a2 folder of this repository. Later most of that will move to an a2-core repository, and specific functionality may migrate to other repositories as well. The /a2 folder will remain the right place to do project-specific A2 development.
 
 ## License
 Copyright (c) 2012 P'unk Ave  

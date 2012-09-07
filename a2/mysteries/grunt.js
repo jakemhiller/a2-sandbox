@@ -7,7 +7,7 @@ module.exports = function(grunt) {
       files: ['test/**/*.js']
     },
     lint: {
-      files: ['grunt.js', '*.js', '**/*.js']
+      files: ['grunt.js', 'lib/**/*.js', 'test/**/*.js']
     },
     watch: {
       files: '<config:lint.files>',
@@ -16,7 +16,7 @@ module.exports = function(grunt) {
     jshint: {
       options: {
         curly: true,
-        eqeqeq: false, // This is annoying with the models
+        eqeqeq: true,
         immed: true,
         latedef: true,
         newcap: true,

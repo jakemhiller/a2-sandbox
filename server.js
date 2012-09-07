@@ -5,7 +5,7 @@ var _ = require('underscore');
 var app = express();
 var port = process.env.PORT || 1168;
 var config = JSON.parse(fs.readFileSync('config.json'));
-var a2 = require('a2-core');
+var a2 = require('./a2/lib/core');
 
 // Configure the express app
 app.set('view engine', 'jade');
@@ -13,21 +13,13 @@ app.use(express.bodyParser());
 app.use(express.static('public'));
 app.use(express.logger('dev'));
 
-// The a2 item types we want are installed
-// for *this project* in its node_modules folder, which the
-// a2-core module can't conveniently access. So we map the
-// item type names in our configuration to the actual loaded
-// type modules before calling a2.bootstrap.
-
-config.a2.itemTypes = config.a2.itemTypeNames.map(function(itemTypeName) {
-  return require(itemTypeName);
-});
-
 // Bootstrap a2 for this specific app, using the config settings
 // intended for a2 (so the rest of our config object can be
 // project-specific if desired)
 
-app = a2.bootstrap(app, config.a2);
+config.a2.extensions = [ __dirname + '/a2' ];
+
+a2.bootstrap(app, config.a2);
 
 app.get('/', function(req, res) {
   res.render('index');
@@ -61,7 +53,7 @@ app.put('/admin/area/:id', function(req, res) {
   }
   // Data arrives as JSON, Express turns that into a nice req.body object
   console.log(req.body);
-  app.a2.validateArea(req.body, {}, function(err, area) {
+  a2.validateArea(req.body, {}, function(err, area) {
     if (err) {
       console.log('error in post');
       res.send(500, err);

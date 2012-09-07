@@ -33,7 +33,8 @@
     "a2-files": "git://github.com/punkave/a2-files.git",
     "a2-text": "git://github.com/punkave/a2-text.git",
     "jade": "~0.27.2",
-    "underscore": "~1.3.3"
+    "underscore": "~1.3.3",
+    "validator": "~0.4.11"
   },
   "devDependencies": {
     "grunt": "~0.3.12"

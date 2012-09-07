@@ -39,36 +39,35 @@ exports['suite'] = {
   },
 
   'open': function(test) {
-    test.expect(11);
+    test.expect(10);
     // Mock an express app object as a context
     var app = { locals: {}, use: function() {} };
-    var a2 = require('a2-core');
+    // When this moves to an a2-core repository this require statement
+    // will just be require('a2-core')
+    var a2 = require(__dirname + '/../a2/lib/core');
     var config = {
-      "defaultItemType": "a2-text",
+      "defaultItemType": "text",
       "itemTypeNames": [
-        "a2-text",
-        "a2-files"
+        "text",
+        "files"
       ]
     };
 
-    config.itemTypes = config.itemTypeNames.map(function(itemTypeName) {
-      return require(itemTypeName);
-    });
+    config.extensions = [ __dirname + '/../a2' ];
 
     a2.bootstrap(app, config);
-    test.ok(app.a2);
     test.ok(app.locals.a2);
 
     var data = {
       itemInfos: [
         {
-          type: 'a2-text',
+          type: 'text',
           data: {
             'text': '<p>Once I met a man who had no <b>hat</b>.</p><p><a href="javascript:alert(5)">Forbidden</a><a href="http://permitted.example.com/">Permitted</a></p>'
           }
         },
         {
-          type: 'a2-text',
+          type: 'text',
           data: {
             text: 'I was sad because I had no fork.'
           }
@@ -76,14 +75,15 @@ exports['suite'] = {
       ]
     };
 
-    app.a2.openArea(data, {}, function(err, data) {
+    a2.openArea(data, {}, function(err, data) {
       test.ok(!err);
       test.ok(data);
 
-      app.a2.validateArea(data, {}, function(err, data) {
+      a2.validateArea(data, {}, function(err, data) {
         test.ok(!err);
         test.ok(data);
         test.ok(data.itemInfos.length === 2);
+        a2.log(data);
         test.ok(data.itemInfos[0].type);
         _.each(data.itemInfos, function(itemInfo) {
           test.ok(itemInfo.permId.length);
@@ -96,16 +96,4 @@ exports['suite'] = {
     });
 
   }
-}
-// exports['awesome'] = {
-//   setUp: function(done) {
-//     // setup here
-//     done();
-//   },
-//   'no args': function(test) {
-//     test.expect(1);
-//     // tests here
-//     test.equal(a2sandbox.awesome(), 'awesome', 'should be awesome.');
-//     test.done();
-//   }
-// };
+};
