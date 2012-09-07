@@ -1,0 +1,9 @@
+#!/bin/sh
+
+# You forked all of the modules to your own repo and you want updates others have made.
+# Run this script to accomplish that. 
+
+bin/merge-from-upstream-in-repository . &&
+find node_modules/ -type l -depth 1 -exec bin/merge-from-upstream-in-repository {} ';' &&
+echo "Merge complete."
+
