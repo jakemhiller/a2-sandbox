@@ -29,9 +29,6 @@
   },
   "dependencies": {
     "express": "3.0.0rc2",
-    "a2-core": "git://github.com/punkave/a2-core.git",
-    "a2-files": "git://github.com/punkave/a2-files.git",
-    "a2-text": "git://github.com/punkave/a2-text.git",
     "jade": "~0.27.2",
     "underscore": "~1.3.3",
     "validator": "~0.4.11"
