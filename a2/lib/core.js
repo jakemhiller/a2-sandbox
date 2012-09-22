@@ -17,7 +17,7 @@ var itemTypes = {};
 // Asset configuration
 var assets = {
   scripts: {
-    edit: [ '/a2/core/js/core.js', '/a2/core/js/area.js', '/a2/core/js/itemWrapper.js' ]
+    edit: [ '/a2/core/javascripts/core.js', '/a2/core/javascripts/area.js', '/a2/core/javascripts/itemWrapper.js' ]
   }
 };
 
@@ -26,7 +26,7 @@ var assets = {
 function registerItemType(itemTypeName, itemType) {
   itemTypes[itemTypeName] = itemType;
   // Cheap way to add item type assets to global assets
-  assets.scripts.edit.push('/a2/itemTypes/' + itemTypeName + '/js/type.js');
+  assets.scripts.edit.push('/a2/itemTypes/' + itemTypeName + '/javascripts/type.js');
 }
 
 function registerStaticRoutes(app) {
@@ -71,17 +71,17 @@ function registerItemTypes() {
   });
 }
 
-// Ensure the id looks like a 32 digit hex string. 
+// Ensure the id looks like a 32 digit hex string.
 
 function validateId(id) {
   if (typeof(id) !== 'string') {
     return false;
   }
-  
+
   if (!id.match(/^[0-9a-f]{32}$/)) {
     return false;
   }
-  
+
   return true;
 }
 
@@ -115,7 +115,7 @@ exports.bootstrap = function(appArg, optionsArg) {
   app.locals.a2.scripts = require('./scripts')(assets);
 };
 
-// Render the normal view of an area. 
+// Render the normal view of an area.
 exports.renderArea = function(data, options) {
 
 };
