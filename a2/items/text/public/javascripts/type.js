@@ -41,6 +41,6 @@ window.a2.registerType({
       '<a class="btn link" data-createLink>Link</li>' +
       '<a class="btn link" data-unlink>Unlink</li>' +
       "</div>" +
-      '<div contentEditable="true" data-text></div>' +
+      '<div class="a2-rich-text-editor" contentEditable="true" data-text></div>' +
     '</div>'
 });
