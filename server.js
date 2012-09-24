@@ -2,6 +2,7 @@ var express = require('express');
 var fs = require('fs');
 var util = require('util');
 var _ = require('underscore');
+var nap = require('nap');
 var app = express();
 var port = process.env.PORT || 1168;
 var config = JSON.parse(fs.readFileSync('config.json'));
@@ -20,6 +21,33 @@ app.use(express.logger('dev'));
 config.a2.extensions = [ __dirname + '/a2' ];
 
 a2.bootstrap(app, config.a2);
+
+nap({
+  assets: {
+    js: {
+      a2: [
+
+      ],
+      backbone: [
+        '/app/coffeescripts/models/**/*',
+        '/app/coffeescripts/views/**/*',
+        '/app/coffeescripts/routers/**/*'
+      ]
+    },
+    css: {
+      all: [
+        '/public/stylesheets/blueprint.css',
+        '/app/stylesheets/**/*'
+      ]
+    },
+    jst: {
+      templates: [
+        '/app/templates/index.jade',
+        '/app/templates/footer.jade'
+      ]
+    }
+  }
+});
 
 app.get('/', function(req, res) {
   res.render('index');
