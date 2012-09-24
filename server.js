@@ -22,33 +22,6 @@ config.a2.extensions = [ __dirname + '/a2' ];
 
 a2.bootstrap(app, config.a2);
 
-nap({
-  assets: {
-    js: {
-      a2: [
-
-      ],
-      backbone: [
-        '/app/coffeescripts/models/**/*',
-        '/app/coffeescripts/views/**/*',
-        '/app/coffeescripts/routers/**/*'
-      ]
-    },
-    css: {
-      all: [
-        '/public/stylesheets/blueprint.css',
-        '/app/stylesheets/**/*'
-      ]
-    },
-    jst: {
-      templates: [
-        '/app/templates/index.jade',
-        '/app/templates/footer.jade'
-      ]
-    }
-  }
-});
-
 app.get('/', function(req, res) {
   res.render('index');
 });
