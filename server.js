@@ -2,7 +2,6 @@ var express = require('express');
 var fs = require('fs');
 var util = require('util');
 var _ = require('underscore');
-var nap = require('nap');
 var app = express();
 var port = process.env.PORT || 1168;
 var config = JSON.parse(fs.readFileSync('config.json'));
