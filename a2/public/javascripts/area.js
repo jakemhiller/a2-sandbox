@@ -1,5 +1,4 @@
-a2.area = function(options)
-{
+a2.area = function(options) {
   var self = this;
   // options.data is equivalent to previous area.serialize() output
   var data = options.data;
@@ -7,21 +6,20 @@ a2.area = function(options)
   self.$el = $(options.el);
   self.$el.html('');
   self.$el.attr('data-item-area-id', id);
+
   var itemWrappers = [];
   var itemInfos = data.itemInfos;
   var types = options.types;
 
-  self.add = function(itemInfo)
-  {
+  self.add = function(itemInfo) {
     var itemWrapper = new a2.itemWrapper({ container: self }, itemInfo);
     // item type not available in this project
-    if (itemWrapper === false)
-    {
+    if (itemWrapper === false) {
       return;
     }
     itemWrappers.push(itemWrapper);
     self.$el.append(itemWrapper.$el);
-  }
+  };
 
   _.each(itemInfos, function(itemInfo) {
     self.add(itemInfo);
@@ -52,8 +50,7 @@ a2.area = function(options)
   // the actual order of the elements again after a jquery UI drag and drop operation.
   // Also reflects removal of an item via dragging and addition of a new item
   // via dragging
-  function reflectOrder()
-  {
+  function reflectOrder() {
     itemWrappers.length = 0;
     self.$el.children().filter('[data-item-wrapper-id]').each(function(index, itemWrapperEl) {
       var itemWrapper = $(itemWrapperEl).data('itemWrapper');
@@ -62,13 +59,11 @@ a2.area = function(options)
     });
   }
 
-  self.itemWrapperRemoved = function(itemWrapper)
-  {
+  self.itemWrapperRemoved = function(itemWrapper) {
     itemWrappers = _.without(itemWrappers, itemWrapper);
-  }
+  };
 
-  self.serialize = function()
-  {
+  self.serialize = function() {
     var info = {
       id: id,
       itemInfos: []
@@ -77,5 +72,5 @@ a2.area = function(options)
       info.itemInfos.push(itemWrapper.serialize());
     });
     return info;
-  }
+  };
 };

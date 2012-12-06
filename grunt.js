@@ -9,9 +9,38 @@ module.exports = function(grunt) {
     lint: {
       files: ['grunt.js', '*.js', '**/*.js']
     },
+    concat: {
+      components: {
+        src: [
+          'components/jquery/jquery.js',
+          'components/underscore/underscore.js',
+          'components/jquery-ui/ui/minified/jquery-ui.min.js',
+          'components/modernizr/modernizr.js'
+          ],
+        dest: 'public/build/javascripts/components.js'
+      },
+      site: {
+        src: [
+          'public/javascripts/a2-sandbox.js'
+          ],
+        dest: 'public/build/javascripts/site.js'
+      }
+    },
+    compass: {
+      dev: {
+        src: 'public/stylesheets',
+        dest: 'public/build/stylesheets',
+        require: 'zurb-foundation',
+        linecomments: true,
+        forcecompile: true,
+        debugsass: true,
+        images: 'public/images',
+        relativeassets: true
+      }
+    },
     watch: {
-      files: '<config:lint.files>',
-      tasks: 'default'
+      files: ['public/**/*.js', "public/stylesheets/**/*.scss"],
+      tasks: 'concat compass'
     },
     jshint: {
       options: {
@@ -34,7 +63,10 @@ module.exports = function(grunt) {
     }
   });
 
-  // Default task.
-  grunt.registerTask('default', 'lint test');
+  grunt.loadNpmTasks('grunt-contrib');
+  grunt.loadNpmTasks('grunt-compass');
 
+  // Default task.
+  grunt.registerTask('default', 'lint concat compass test');
+  grunt.registerTask('dev', 'concat compass');
 };

@@ -18,10 +18,9 @@ exports.dirname = __dirname + '/..';
 // requires no storage outside the JSON-friendly itemInfo
 // object, you need only invoke the callback immediately.
 
-exports.open = function(itemInfo, callback)
-{
+exports.open = function(itemInfo, callback) {
   callback(null, itemInfo);
-}
+};
 
 // Takes a callback, so time-consuming asynchronous validation and
 // syncing operations are permissible but not mandatory. In addition to
@@ -32,8 +31,7 @@ exports.open = function(itemInfo, callback)
 // 32-digit hex string unique to this item. If you need to sync from a
 // temporary to a permanent space, refer to itemInfo.tempId as well.
 
-exports.validate = function(itemInfo, options, callback)
-{
+exports.validate = function(itemInfo, options, callback) {
   var e;
   try {
     var text = itemInfo.data.text;
@@ -46,9 +44,9 @@ exports.validate = function(itemInfo, options, callback)
     text = sanitize(text).xss();
     itemInfo.data = { text: text };
     callback(null, itemInfo);
-  } catch (e) {
-    console.log(e);
-    console.log(e.stack);
+  } catch (event) {
+    console.log(event);
+    console.log(event.stack);
     callback(e, null);
   }
 };

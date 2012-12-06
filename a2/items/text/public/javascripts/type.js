@@ -14,10 +14,13 @@ window.a2.registerType({
     self.serialize = function() {
       return {
         'text': self.editor.html()
-      }
+      };
     };
     function enableControl(command, promptForLabel) {
-      self.$el.find('[data-' + command + ']').click(function() {
+      self.$el
+        .off('click', '[data-' + command + ']')
+        .on('click', '[data-' + command + ']', function() {
+
         var arg = null;
         if (promptForLabel) {
           arg = prompt(promptForLabel);
@@ -27,7 +30,10 @@ window.a2.registerType({
         }
         document.execCommand(command, false, arg);
         return false;
-      }).mousedown(function(e) {
+
+      })
+        .off('mousedown', '[data-' + command + ']')
+        .on('mousedown', '[data-' + command + ']', function(e) {
         // Must prevent default on mousedown or the rich text editor loses the focus
         e.preventDefault();
         return false;
@@ -35,11 +41,11 @@ window.a2.registerType({
     }
   },
   defaultData: { text: '' },
-  defaultTemplate: '<div class="row">' +
-      '<a class="btn link" data-bold><i class="icon-bold"></i></li>' +
-      '<a class="btn link" data-italic><i class="icon-italic"></i></li>' +
-      '<a class="btn link" data-createLink>Link</li>' +
-      '<a class="btn link" data-unlink>Unlink</li>' +
+  defaultTemplate: '<div class="row button-group">' +
+      '<a class="button small link" data-bold><i class="icon-bold"></i>Bold</li>' +
+      '<a class="button small link" data-italic><i class="icon-italic"></i>Italic</li>' +
+      '<a class="button small link" data-createLink>Link</li>' +
+      '<a class="button small link" data-unlink>Unlink</li>' +
       "</div>" +
       '<div class="a2-rich-text-editor" contentEditable="true" data-text></div>' +
     '</div>'

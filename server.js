@@ -1,14 +1,17 @@
-var express = require('express');
-var fs = require('fs');
-var util = require('util');
-var _ = require('underscore');
-var app = express();
-var port = process.env.PORT || 1168;
-var config = JSON.parse(fs.readFileSync('config.json'));
-var a2 = require('./a2/lib/core');
+var express = require('express'),
+    nunjucks = require('nunjucks'),
+    fs = require('fs'),
+    util = require('util'),
+    _ = require('underscore'),
+    app = express(),
+    port = process.env.PORT || 1168,
+    config = JSON.parse(fs.readFileSync('config.json')),
+    a2 = require('./a2/lib/core');
+
+var env = new nunjucks.Environment(new nunjucks.FileSystemLoader('views'));
+env.express(app);
 
 // Configure the express app
-app.set('view engine', 'jade');
 app.use(express.bodyParser());
 app.use(express.static('public'));
 app.use(express.logger('dev'));
@@ -22,7 +25,7 @@ config.a2.extensions = [ __dirname + '/a2' ];
 a2.bootstrap(app, config.a2);
 
 app.get('/', function(req, res) {
-  res.render('index');
+  res.render('index.html');
 });
 
 var areas = {

@@ -20,8 +20,7 @@ a2.itemWrapper = function(options, itemInfo)
 
   self.tempId = a2.generateId();
 
-  if (!a2.types[itemInfo.type])
-  {
+  if (!a2.types[itemInfo.type]) {
     // "Aaaaand Sir Type Not Appearing In This Project." - Monty Python
     return false;
   }
@@ -30,8 +29,8 @@ a2.itemWrapper = function(options, itemInfo)
   itemInfo.permId = self.permId;
   self.item = new a2.types[itemInfo.type].constructor(itemInfo);
   self.$el = $(
-    a2.template('itemWrapper',
-      defaultTemplate, { }));
+    a2.template('itemWrapper', defaultTemplate, { })
+  );
   self.$el.attr('data-item-wrapper-temp-id', self.tempId);
   self.$el.attr('data-item-wrapper-perm-id', self.permId);
 
@@ -39,34 +38,30 @@ a2.itemWrapper = function(options, itemInfo)
   // carry references to the corresponding itemWrapper objects
   self.$el.data('itemWrapper', self);
 
-  self.$el.find('[data-item-wrapper-delete]').click(function()
-  {
+  self.$el.find('[data-item-wrapper-delete]').click(function() {
     self.remove();
     return false;
   });
 
-  self.remove = function()
-  {
+  self.remove = function(){
     self.$el.remove();
     options.container.itemWrapperRemoved(self);
-  }
+  };
 
   // After the remove handler so it doesn't accidentally match any sub-areas that might exist
   self.$el.find('[data-item]').replaceWith(self.item.$el);
 
-  self.serialize = function()
-  {
+  self.serialize = function() {
     return {
       type: itemInfo.type,
       tempId: self.tempId,
       permId: self.permId,
       data: self.item.serialize()
     };
-  }
+  };
 
-  self.setContainer = function(container)
-  {
+  self.setContainer = function(container) {
     options.container = container;
-  }
+  };
 };
 
